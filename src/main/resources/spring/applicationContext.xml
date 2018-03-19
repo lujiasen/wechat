@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:websocket="http://www.springframework.org/schema/websocket"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                    http://www.springframework.org/schema/tx
+                    http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+                    http://www.springframework.org/schema/aop
+                    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+                    http://www.springframework.org/schema/context
+                    http://www.springframework.org/schema/context/spring-context-3.0.xsd
+                    http://www.springframework.org/schema/task
+                    http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+
+    <aop:aspectj-autoproxy/>
+    <context:component-scan base-package="com.ljs">
+        <context:exclude-filter type="annotation"
+                                expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+    <!--定时任务-->
+    <task:executor id="executor" pool-size="5"/>
+    <task:scheduler id="scheduler" pool-size="10"/>
+    <task:annotation-driven executor="executor" scheduler="scheduler"/>
+    <!--配置作业注册中心 -->
+    <!--
+        <reg:zookeeper id="regCenter" server-lists="192.168.0.201:2181" namespace="haocai-job" base-sleep-time-milliseconds="1000" max-sleep-time-milliseconds="3000" max-retries="3" />
+    -->
+    <!-- 配置简单作业-->
+    <!--<job:simple id="myTestJob" class="com.haocai.lottery.job.MyTestJob" registry-center-ref="regCenter" cron="0/10 * * * * ?" sharding-total-count="1" sharding-item-parameters="0=A" />-->
+
+
+    <bean id="annotationPropertyConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:config/jdbc.properties</value>
+                <value>classpath:config/redis.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean class="org.apache.commons.dbcp2.BasicDataSource"
+          destroy-method="close" id="dataSource">
+        <property name="driverClassName" value="${database.driverClassName}"/>
+        <property name="url" value="${database.url}"/>
+        <property name="username" value="${database.username}"/>
+        <property name="password" value="${database.password}"/>
+        <property name="testOnBorrow" value="true"/>
+        <property name="testOnReturn" value="true"/>
+        <property name="testWhileIdle" value="true"/>
+        <property name="timeBetweenEvictionRunsMillis" value="1800000"/>
+        <property name="numTestsPerEvictionRun" value="3"/>
+        <property name="minEvictableIdleTimeMillis" value="1800000"/>
+        <property name="validationQuery" value="SELECT 1 FROM DUAL"/>
+        <property name="validationQueryTimeout" value="30000"/>
+        <property name="maxWaitMillis" value="30000"/>
+        <property name="maxTotal" value="500"/>
+        <property name="maxIdle" value="10"/>
+        <property name="minIdle" value="3"/>
+        <property name="defaultQueryTimeout" value="300"/>
+    </bean>
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="configLocation" value="classpath:spring/mybatis-config.xml"/>
+        <property name="mapperLocations" value="classpath*:mapping/*.xml"/>
+    </bean>
+
+    <!--<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">-->
+    <!--<property name="basePackage" value="com.haocai.mgr.dao" />-->
+    <!--<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>-->
+    <!--</bean>-->
+
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <tx:annotation-driven transaction-manager="transactionManager" />
+
+    <!--lottery数据源-->
+    <!--<bean class="org.apache.commons.dbcp2.BasicDataSource"-->
+          <!--destroy-method="close" id="lotteryDataSource">-->
+        <!--<property name="driverClassName" value="${database.lottery.driverClassName}"/>-->
+        <!--<property name="url" value="${database.lottery.url}"/>-->
+        <!--<property name="username" value="${database.lottery.username}"/>-->
+        <!--<property name="password" value="${database.lottery.password}"/>-->
+        <!--<property name="testOnBorrow" value="true"/>-->
+        <!--<property name="testOnReturn" value="true"/>-->
+        <!--<property name="testWhileIdle" value="true"/>-->
+        <!--<property name="timeBetweenEvictionRunsMillis" value="1800000"/>-->
+        <!--<property name="numTestsPerEvictionRun" value="3"/>-->
+        <!--<property name="minEvictableIdleTimeMillis" value="1800000"/>-->
+        <!--<property name="validationQuery" value="SELECT 1 FROM DUAL"/>-->
+        <!--<property name="validationQueryTimeout" value="30000"/>-->
+        <!--<property name="maxWaitMillis" value="30000"/>-->
+        <!--<property name="maxTotal" value="500"/>-->
+        <!--<property name="maxIdle" value="10"/>-->
+        <!--<property name="minIdle" value="3"/>-->
+        <!--<property name="defaultQueryTimeout" value="300"/>-->
+    <!--</bean>-->
+
+    <!--<bean id="lotterySqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">-->
+        <!--<property name="dataSource" ref="lotteryDataSource"/>-->
+        <!--<property name="configLocation" value="classpath:spring/mybatis-config.xml"/>-->
+        <!--<property name="mapperLocations">-->
+            <!--<array>-->
+                <!--<value>classpath:mapping/lottery/*.xml</value>-->
+                <!--<value>classpath:mapping/gateway/*.xml</value>-->
+                <!--<value>classpath:mapping/plusAward/*.xml</value>-->
+                <!--<value>classpath:mapping/analysis/*.xml</value>-->
+            <!--</array>-->
+        <!--</property>-->
+    <!--</bean>-->
+
+    <!--<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">-->
+    <!--<property name="basePackage" value="com.haocai.lottery.dao" />-->
+    <!--<property name="sqlSessionFactoryBeanName" value="lotterySqlSessionFactory"/>-->
+    <!--</bean>-->
+    <!--<bean id="lotteryTransactionManager"-->
+          <!--class="org.springframework.jdbc.datasource.DataSourceTransactionManager">-->
+        <!--<property name="dataSource" ref="lotteryDataSource"/>-->
+    <!--</bean>-->
+    <!--<bean id="lotteryDao" class="com.haocai.lottery.dao.impl.LotteryDaoImpl">-->
+        <!--<property name="sqlSessionFactory" ref="lotterySqlSessionFactory"/>-->
+    <!--</bean>-->
+
+    <!--<tx:annotation-driven transaction-manager="lotteryTransactionManager"/>-->
+
+    <!--<bean class="com.haocai.util.SwaggerConfig" />-->
+    <!-- 注册springBean日志bean,如果不注册,则不会打印所有注册bean日志 -->
+    <!--<bean class="com.haocai.util.SpringBeanLog" />-->
+    <!--<bean id="agentpay" class="java.lang.String">-->
+        <!--<constructor-arg>-->
+            <!--<value>${agentpay.url}</value>-->
+        <!--</constructor-arg>-->
+    <!--</bean>-->
+    <!--<bean id="agentpayDSEKey" class="java.lang.String">-->
+        <!--<constructor-arg>-->
+            <!--<value>${agentpay.DSEKey}</value>-->
+        <!--</constructor-arg>-->
+    <!--</bean>-->
+    <!--<bean id="agentpayMD5Key" class="java.lang.String">-->
+        <!--<constructor-arg>-->
+            <!--<value>${agentpay.MD5Key}</value>-->
+        <!--</constructor-arg>-->
+    <!--</bean>-->
+    <!--<bean id="agentpayAppId" class="java.lang.String">-->
+        <!--<constructor-arg>-->
+            <!--<value>${agentpay.appId}</value>-->
+        <!--</constructor-arg>-->
+    <!--</bean>-->
+    <!--<bean id="sessionTime" class="java.lang.Integer">-->
+        <!--<constructor-arg>-->
+            <!--<value>${session.time}</value>-->
+        <!--</constructor-arg>-->
+    <!--</bean>-->
+
+    <!--<bean id="lottoNumConfig" class="java.lang.Boolean">-->
+        <!--<constructor-arg>-->
+            <!--<value>${lotto.num.config}</value>-->
+        <!--</constructor-arg>-->
+    <!--</bean>-->
+
+    <!--<bean id="gatewayHostName" class="java.lang.String">-->
+        <!--<constructor-arg>-->
+            <!--<value>${gateway.hostName}</value>-->
+        <!--</constructor-arg>-->
+    <!--</bean>-->
+
+    <!--<bean class="com.aliyun.oss.OSSClient" id="ossClient">-->
+        <!--<constructor-arg index="0" value="${oss.hostUrl}"/>-->
+        <!--<constructor-arg index="1" value="${oss.accessKeyId}"/>-->
+        <!--<constructor-arg index="2" value="${oss.accessKeySecret}"/>-->
+    <!--</bean>-->
+
+    <!--<bean class="com.haocai.util.OSSSupport" id="ossSupport">-->
+        <!--<property name="ossClient" ref="ossClient"/>-->
+        <!--<property name="bucketName" value="${oss.bucketName}"/>-->
+        <!--<property name="accessHost" value="${oss.accessHost}"/>-->
+    <!--</bean>-->
+
+    <!--  createBy Yin   GatewayDao and GatewayLottoCategoryDao  Start -->
+
+
+</beans>
