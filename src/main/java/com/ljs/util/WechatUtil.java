@@ -11,7 +11,7 @@ public class WechatUtil {
         map.put("grant_type", "client_credential");
         map.put("appid", appId);
         map.put("secret", secret);
-        String return_data = HttpClientHelper.sendGet(WeChatURL.ACCESS_TOKEN.getUrl(), map, "UTF-8");
+        String return_data = HttpClientHelper.sendGet(WeChatURL.ACCESS_TOKEN.getUrl(), map);
         return return_data;
     }
 
@@ -23,11 +23,7 @@ public class WechatUtil {
         map.put("access_token",access_token);
         map.put("openid",openId);
         map.put("lang","zh_CN");
-        information = HttpClientHelper.sendGet(WeChatURL.USER_INFORMATION.getUrl(), map, "UTF-8");
+        information = HttpClientHelper.sendGet(WeChatURL.USER_INFORMATION.getUrl(), map);
         return information;
-    }
-    public static void main(String[] args) {
-        System.out.println(WeChatURL.a);
-        System.out.println(WeChatURL.USER_INFORMATION.getUrl());
     }
 }

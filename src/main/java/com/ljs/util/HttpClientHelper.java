@@ -253,7 +253,7 @@ public class HttpClientHelper {
      * @author:liuyc
      * @time:2016年5月17日 下午3:27:29
      */
-    public static String sendGet(String urlParam, Map<String, Object> params, String charset) {
+    public static String sendGet(String urlParam, Map<String, Object> params) {
         StringBuffer resultBuffer = null;
         // 构建请求参数
         StringBuffer sbParams = new StringBuffer();
@@ -278,7 +278,7 @@ public class HttpClientHelper {
             con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             con.connect();
             resultBuffer = new StringBuffer();
-            br = new BufferedReader(new InputStreamReader(con.getInputStream(), charset));
+            br = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
             String temp;
             while ((temp = br.readLine()) != null) {
                 resultBuffer.append(temp);
