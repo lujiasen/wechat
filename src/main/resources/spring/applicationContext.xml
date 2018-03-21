@@ -80,6 +80,10 @@
     </bean>
     <tx:annotation-driven transaction-manager="transactionManager" />
 
+    <bean id="wechatDao" class="com.ljs.dao.impl.WeChatDaoImpl">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
     <!--lottery数据源-->
     <!--<bean class="org.apache.commons.dbcp2.BasicDataSource"-->
           <!--destroy-method="close" id="lotteryDataSource">-->
