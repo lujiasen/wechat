@@ -1,5 +1,6 @@
 package com.ljs.util;
 
+import org.apache.poi.ss.formula.functions.T;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.data.redis.core.TimeoutUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 
@@ -32,6 +34,7 @@ public class Cache {
 
     /**
      * 不超时
+     *
      * @param key
      * @param value
      */
@@ -87,5 +90,18 @@ public class Cache {
         stringRedisTemplate.delete(key);
     }
 
+    /**
+     * 存入list
+     */
+    public void setList(String key, String object) {
+        stringRedisTemplate.opsForList().rightPush(key, object);
+    }
+
+    /**
+     * 获取list
+     */
+    public List<String> getList(String key, int start, int end) {
+        return stringRedisTemplate.opsForList().range(key, start, end);
+    }
 
 }
