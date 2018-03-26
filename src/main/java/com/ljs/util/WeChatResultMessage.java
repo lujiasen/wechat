@@ -1,13 +1,14 @@
 package com.ljs.util;
 
+import com.ljs.pojo.weChat.Article;
+import com.ljs.pojo.weChat.NewsMessage;
+import com.ljs.pojo.weChat.TextMessage;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.jiang.resp.Article;
-import com.jiang.resp.NewsMessage;
-import com.jiang.resp.TextMessage;
 
 
 /**

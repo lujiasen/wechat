@@ -17,7 +17,6 @@
     <mysql.connector.version>5.1.21</mysql.connector.version>
     <aspectj.version>1.8.9</aspectj.version>
     <slf4j.version>1.7.2</slf4j.version>
-    <log4j.version>1.2.15</log4j.version>
     <logback.version>1.2.2</logback.version>
     <junit.version>4.12</junit.version>
   </properties>
@@ -44,12 +43,7 @@
       <version>LATEST</version>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/org.apache.log4j/com.springsource.org.apache.log4j -->
-    <dependency>
-      <groupId>org.apache.log4j</groupId>
-      <artifactId>com.springsource.org.apache.log4j</artifactId>
-      <version>1.2.15</version>
-    </dependency>
+
 
     <!-- https://mvnrepository.com/artifact/org.dom4j/dom4j -->
     <dependency>

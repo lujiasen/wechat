@@ -8,10 +8,11 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.jiang.resp.Article;
-import com.jiang.resp.MusicMessage;
-import com.jiang.resp.NewsMessage;
-import com.jiang.resp.TextMessage;
+
+import com.ljs.pojo.weChat.Article;
+import com.ljs.pojo.weChat.MusicMessage;
+import com.ljs.pojo.weChat.NewsMessage;
+import com.ljs.pojo.weChat.TextMessage;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
