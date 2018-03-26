@@ -39,18 +39,18 @@ public class WechatController {
             log.info("timestamp----"+timestamp);
             log.info("nonce----"+nonce);
             log.info("echostr----"+echostr);
-
-            String getSignatureStr = SignUtil.getSignature(timestamp, nonce, "somur2017");
+            String token = "lujiasen"; //此处指令牌
+            String getSignatureStr = SignUtil.getSignature(timestamp, nonce, token);
             log.info("getSignatureStr----"+getSignatureStr);
 
             try {
                 Map<String, String> map = MessageUtil.parseXml(request);
                 //根据company_id查询微信端欢迎语
-                resultStr = weChatService.callback(map);
+                resultStr = weChatService.callback(map, token);
                 log.info(resultStr);
             } catch (Exception e) {
                 // TODO: handle exception
-                log.error("smccjweChatCallback.json--出错--",e.fillInStackTrace());
+                log.error("callback.json--出错--",e.fillInStackTrace());
             }
         }
 

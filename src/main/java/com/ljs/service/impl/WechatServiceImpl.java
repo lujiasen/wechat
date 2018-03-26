@@ -1,10 +1,11 @@
 package com.ljs.service.impl;
 
 import com.ljs.service.WechatService;
+import com.ljs.util.WeiXinServerMenu;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
-import java.util.logging.Logger;
 
 @Service
 public class WechatServiceImpl implements WechatService {
@@ -36,7 +37,7 @@ public class WechatServiceImpl implements WechatService {
 
         }
 
-        String resultxXml = WeiXinServerMenu.replyMessage(map,"",type,paramEWM);
+        String resultxXml = WeiXinServerMenu.replyMessage(map,"你好!!!",type,paramEWM);
         return resultxXml;
     }
 }
