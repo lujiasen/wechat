@@ -1,4 +1,4 @@
-package com.somur.util;
+package com.ljs.util;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;

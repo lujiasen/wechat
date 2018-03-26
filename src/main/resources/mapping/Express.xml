@@ -7,7 +7,7 @@
         <result  column="express_name" property="expressName"/>
         <result  column="order_no" property="orderNo"/>
     </resultMap>
-    <select id="getExpress" resultMap="express">
+    <select id="getExpress" resultType="java.util.Map">
         select * from express order by order_no
     </select>
 

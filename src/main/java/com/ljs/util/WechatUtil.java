@@ -26,4 +26,37 @@ public class WechatUtil {
         information = HttpClientHelper.sendGet(WeChatURL.USER_INFORMATION.getUrl(), map);
         return information;
     }
+
+
+    /**
+     * 处理微信回复消息
+     * @param map
+     * @param welcomeContent 欢迎与
+     * @param type key
+     * @param paramEWM 二维码参数
+     * @return
+     */
+    public static String replyMessage(Map<String,String> map,String welcomeContent,String type,String paramEWM){
+
+        //信息类型
+        String msgType = map.get("MsgType");
+
+        String resultXml=null;
+        //事件推送
+        if(msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_EVENT)){
+            String event = map.get("Event");
+            //订阅
+            if(event.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)){
+                resultXml =WeChatResultMessage.getEvent(map,welcomeContent,type,paramEWM);
+            }else if(event.equals(MessageUtil.SCAN) && type.equals("shuimuadmin")){
+                resultXml =WeChatResultMessage.getEvent(map,welcomeContent,type,MessageUtil.SCAN);
+            }
+        }
+        //文本信息回復
+        else if(msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_TEXT)){
+            resultXml =WeChatResultMessage.getSearchMessage(map,welcomeContent,type,paramEWM);
+        }
+
+        return resultXml;
+    }
 }

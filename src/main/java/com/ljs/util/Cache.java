@@ -104,4 +104,11 @@ public class Cache {
         return stringRedisTemplate.opsForList().range(key, start, end);
     }
 
+//    /**
+//     * 存入hashMap
+//     */
+//    public void setMap(String key,Map<>){
+//        stringRedisTemplate.opsForHash().putAll(key,);
+//    }
+
 }

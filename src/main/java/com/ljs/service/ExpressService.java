@@ -5,5 +5,5 @@ import com.ljs.pojo.Express;
 import java.util.List;
 
 public interface ExpressService {
-    public List<Express> getExpress();
+    public String getExpress();
 }

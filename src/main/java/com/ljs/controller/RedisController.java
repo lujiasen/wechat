@@ -13,17 +13,15 @@ import java.util.List;
 
 @Controller
 @RequestMapping("login")
-public class loginController {
+public class RedisController {
     @Autowired
     private  Cache cahce;
 
     @Autowired
     private ExpressService expressService;
     @ResponseBody
-    @RequestMapping("/sss")
-    public List<Express> ss() {
-//        cahce.set("sss","sdfafasfasfd",10000);
-
+    @RequestMapping("/saveExpress")
+    public String ss() {
         return expressService.getExpress();
     }
 }
