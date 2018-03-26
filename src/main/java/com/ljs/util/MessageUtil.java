@@ -8,6 +8,10 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.jiang.resp.Article;
+import com.jiang.resp.MusicMessage;
+import com.jiang.resp.NewsMessage;
+import com.jiang.resp.TextMessage;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
@@ -120,82 +124,82 @@ public class MessageUtil {
 
 		return map;
 	}
-//
-//	/**
-//	 *
-//	* @param textMessage
-//	* @return
-//	* @Description: 文本消息对象转换成xml
-//	* @author lujiasen
-//	* @date 2016-10-12 上午10:28:52
-//	* @version V1.2
-//	 */
-//	public static String textMessageToXml(TextMessage textMessage) {
-//		xstream.alias("xml", textMessage.getClass());
-//		return xstream.toXML(textMessage);
-//	}
-//
-//
-//	public static String customerMessageToXml(TextMessage textMessage) {
-//		xstream.alias("xml", textMessage.getClass());
-//		return xstream.toXML(textMessage);
-//	}
-//
-//
-//	/**
-//	 *
-//	* @param musicMessage
-//	* @return
-//	* @Description: 音乐消息对象转换成xml
-//	* @author lujiasen
-//	* @date 2016-10-12 上午10:29:00
-//	* @version V1.2
-//	 */
-//	public static String musicMessageToXml(MusicMessage musicMessage) {
-//		xstream.alias("xml", musicMessage.getClass());
-//		return xstream.toXML(musicMessage);
-//	}
-//
-//	/**
-//	 *
-//	* @param newsMessage
-//	* @return
-//	* @Description: 图文消息对象转换成xml
-//	* @author lujiasen
-//	* @date 2016-10-12 上午10:29:07
-//	* @version V1.2
-//	 */
-//	public static String newsMessageToXml(NewsMessage newsMessage) {
-//		xstream.alias("xml", newsMessage.getClass());
-//		xstream.alias("item", new Article().getClass());
-//		return xstream.toXML(newsMessage);
-//	}
-//
-//	/**
-//	 * 扩展xstream，使其支持CDATA块
-//	 */
-//	private static XStream xstream = new XStream(new XppDriver() {
-//		public HierarchicalStreamWriter createWriter(Writer out) {
-//			return new PrettyPrintWriter(out) {
-//				// 对所有xml节点的转换都增加CDATA标记
-//				boolean cdata = true;
-//
-//				@SuppressWarnings("unchecked")
-//				public void startNode(String name, Class clazz) {
-//					super.startNode(name, clazz);
-//				}
-//
-//				protected void writeText(QuickWriter writer, String text) {
-//					if (cdata) {
-//						writer.write("<![CDATA[");
-//						writer.write(text);
-//						writer.write("]]>");
-//					} else {
-//						writer.write(text);
-//					}
-//				}
-//			};
-//		}
-//	});
+
+	/**
+	 *
+	* @param textMessage
+	* @return
+	* @Description: 文本消息对象转换成xml
+	* @author lujiasen
+	* @date 2016-10-12 上午10:28:52
+	* @version V1.2
+	 */
+	public static String textMessageToXml(TextMessage textMessage) {
+		xstream.alias("xml", textMessage.getClass());
+		return xstream.toXML(textMessage);
+	}
+
+
+	public static String customerMessageToXml(TextMessage textMessage) {
+		xstream.alias("xml", textMessage.getClass());
+		return xstream.toXML(textMessage);
+	}
+
+
+	/**
+	 *
+	* @param musicMessage
+	* @return
+	* @Description: 音乐消息对象转换成xml
+	* @author lujiasen
+	* @date 2016-10-12 上午10:29:00
+	* @version V1.2
+	 */
+	public static String musicMessageToXml(MusicMessage musicMessage) {
+		xstream.alias("xml", musicMessage.getClass());
+		return xstream.toXML(musicMessage);
+	}
+
+	/**
+	 *
+	* @param newsMessage
+	* @return
+	* @Description: 图文消息对象转换成xml
+	* @author lujiasen
+	* @date 2016-10-12 上午10:29:07
+	* @version V1.2
+	 */
+	public static String newsMessageToXml(NewsMessage newsMessage) {
+		xstream.alias("xml", newsMessage.getClass());
+		xstream.alias("item", new Article().getClass());
+		return xstream.toXML(newsMessage);
+	}
+
+	/**
+	 * 扩展xstream，使其支持CDATA块
+	 */
+	private static XStream xstream = new XStream(new XppDriver() {
+		public HierarchicalStreamWriter createWriter(Writer out) {
+			return new PrettyPrintWriter(out) {
+				// 对所有xml节点的转换都增加CDATA标记
+				boolean cdata = true;
+
+				@SuppressWarnings("unchecked")
+				public void startNode(String name, Class clazz) {
+					super.startNode(name, clazz);
+				}
+
+				protected void writeText(QuickWriter writer, String text) {
+					if (cdata) {
+						writer.write("<![CDATA[");
+						writer.write(text);
+						writer.write("]]>");
+					} else {
+						writer.write(text);
+					}
+				}
+			};
+		}
+	});
 }
 
