@@ -81,7 +81,7 @@ public class SignUtil {
     * @param token
     * @return  
     * @Description:获取signature 
-    * @author jiangpeng    
+    * @author lujiasen
     * @date 2016-10-12 上午11:27:09  
     * @version V1.2
      */

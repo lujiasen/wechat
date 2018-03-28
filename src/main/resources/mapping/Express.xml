@@ -6,6 +6,7 @@
         <result  column="express_no" property="expressNo"/>
         <result  column="express_name" property="expressName"/>
         <result  column="order_no" property="orderNo"/>
+        <result column="kuaidi100" property="kuaidi100"/>
     </resultMap>
     <select id="getExpress" resultType="java.util.Map">
         select * from express order by order_no

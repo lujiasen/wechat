@@ -12,15 +12,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 
 @Controller
-@RequestMapping("login")
+@RequestMapping("redis")
 public class RedisController {
     @Autowired
     private  Cache cahce;
 
     @Autowired
     private ExpressService expressService;
+
     @ResponseBody
-    @RequestMapping("/saveExpress")
+    @RequestMapping( value = "/saveExpress", produces = "application/json;charset=utf-8")
     public String ss() {
         return expressService.getExpress();
     }

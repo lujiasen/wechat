@@ -381,6 +381,32 @@
 
       </properties>
     </profile>
+
+    <profile>
+      <id>DEV</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <properties>
+        <database.url>jdbc:mysql://39.107.233.172:3306/lujiasen?characterEncoding=utf-8</database.url>
+        <database.driverClassName>com.mysql.jdbc.Driver</database.driverClassName>
+        <database.username>root</database.username>
+        <database.password>Ljs116119!</database.password>
+        <database.lottery.url>jdbc:mysql://192.168.0.202:3301/lottery?characterEncoding=utf-8</database.lottery.url>
+        <database.lottery.driverClassName>com.mysql.jdbc.Driver</database.lottery.driverClassName>
+        <database.lottery.username>lottery_mgr</database.lottery.username>
+        <database.lottery.password>haocai888</database.lottery.password>
+
+
+        <redis.hostName>39.107.233.172</redis.hostName>
+        <redis.password>ljs116119</redis.password>
+        <redis.port>6379</redis.port>
+
+      </properties>
+    </profile>
   </profiles>
+
+
+
 
 </project>

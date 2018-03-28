@@ -2,7 +2,8 @@ package com.ljs.util;
 
 public enum RedisConst {
 
-    EXPRESS_LIST("express_list", "快递列表");
+    EXPRESS_LIST("express_list", "快递列表"),
+    TOKEN("token","微信token");
     private String name;
     private String demo;
 

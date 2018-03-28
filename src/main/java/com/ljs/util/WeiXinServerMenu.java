@@ -2,6 +2,8 @@ package com.ljs.util;
 
 
 
+import org.apache.log4j.Logger;
+
 import java.util.Map;
 
 
@@ -17,6 +19,7 @@ import java.util.Map;
  * @version V1.0
  */
 public class WeiXinServerMenu {
+	private static Logger logger = Logger.getLogger(WeiXinServerMenu.class);
 	
 	/**
 	 * 
@@ -31,7 +34,7 @@ public class WeiXinServerMenu {
 		 
 		//信息类型
 		String msgType = map.get("MsgType");
-		
+		logger.info("msgType----"+msgType);
 		String resultXml=null;
 		//事件推送
 		if(msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_EVENT)){

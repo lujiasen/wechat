@@ -11,7 +11,9 @@ import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
+import jdk.nashorn.internal.runtime.regexp.RegExp;
 import net.sf.json.JSONObject;
 
 /**
@@ -275,10 +277,21 @@ public class KdniaoTrackQueryAPI {
 
 
     public static String getExpressCompany(String express_no) {
-        Map<String,Object> map = new HashMap<String, Object>();
-        map.put("resultv2","1");
-        map.put("text",express_no);
-        String json_data = HttpClientHelper.sendGet(company, map);
+        String pattern = "^\\d{10,}$";
+        boolean isMatch = Pattern.matches(pattern, express_no);
+        String json_data = "";
+        if (isMatch){
+            Map<String,Object> map = new HashMap<String, Object>();
+            map.put("resultv2","1");
+            map.put("text",express_no);
+            json_data = HttpClientHelper.sendGet(company, map);
+        }else {
+            JSONObject json = new JSONObject();
+            json.put("comCode",Code.EXPRESS_NO_ERROR.getValue());
+            json.put("message",Code.EXPRESS_NO_ERROR.getDemo());
+            json_data = json.toString();
+        }
+
         return json_data;
     }
 }

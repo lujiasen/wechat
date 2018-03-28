@@ -1,8 +1,7 @@
 package com.ljs.util;
 
+import com.ljs.task.TaskJob;
+
 public class test {
-    public static void main(String[] args) {
-        System.out.println(WeChatURL.ACCESS_TOKEN.getUrl());
-    }
 
 }
