@@ -2,7 +2,11 @@ package com.ljs.util;
 
 public enum Code {
 
-    EXPRESS_NO_ERROR("0001", "快递单号不存在");
+    EXPRESS_NO_ERROR("0", "暂无轨迹信息"),
+
+    SUCCESS("0000", "成功"),
+
+    ERROR("-1", "网络异常");
 
     private String value;
     private String demo;

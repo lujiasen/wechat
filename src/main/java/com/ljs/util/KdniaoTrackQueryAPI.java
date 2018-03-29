@@ -32,11 +32,11 @@ public class KdniaoTrackQueryAPI {
 
     //DEMO
     public static void main(String[] args) {
-        System.out.println(getExpressCompany("483850841525"));
         try {
-            String expressMsg = getOrderTracesByJson("STO", "483850841525");
+            System.out.println(getCompanyByJson("403057dd274470"));
+            String expressMsg = getOrderTracesByJson("STO", "403057274470");
             JSONObject json = JSONObject.fromObject(expressMsg);
-            System.out.print(json);
+            System.out.println(json);
             System.out.println(json.getString("State"));
             System.out.println(json.getString("State").equals("0"));
         } catch (Exception e) {
@@ -50,26 +50,30 @@ public class KdniaoTrackQueryAPI {
     private static String AppKey = "200eff72-b6b6-4043-adc3-4ba1bea4d58e";
     //请求url
     private static String ReqURL = "http://api.kdniao.cc/Ebusiness/EbusinessOrderHandle.aspx";
-    //单号获取物流公司
-    private static String company = "http://www.kuaidi100.com/autonumber/autoComNum";
 
     /**
      * Json方式 查询订单物流轨迹
      *
      * @throws Exception
      */
-    public static String getOrderTracesByJson(String expCode, String expNo) throws Exception {
-        String requestData = "{'OrderCode':'','ShipperCode':'" + expCode + "','LogisticCode':'" + expNo + "'}";
+    public static String getOrderTracesByJson(String expCode, String expNo){
+        String result = "";
+        try{
+            String requestData = "{'OrderCode':'','ShipperCode':'" + expCode + "','LogisticCode':'" + expNo + "'}";
 
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("RequestData", urlEncoder(requestData, "UTF-8"));
-        params.put("EBusinessID", EBusinessID);
-        params.put("RequestType", "1002");
-        String dataSign = encrypt(requestData, AppKey, "UTF-8");
-        params.put("DataSign", urlEncoder(dataSign, "UTF-8"));
-        params.put("DataType", "2");
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("RequestData", urlEncoder(requestData, "UTF-8"));
+            params.put("EBusinessID", EBusinessID);
+            params.put("RequestType", "1002");
+            String dataSign = encrypt(requestData, AppKey, "UTF-8");
+            params.put("DataSign", urlEncoder(dataSign, "UTF-8"));
+            params.put("DataType", "2");
 
-        String result = sendPost(ReqURL, params);
+            result = sendPost(ReqURL, params);
+
+        }catch (Exception e){
+
+        }
 
         //根据公司业务处理返回的信息......
 
@@ -275,16 +279,39 @@ public class KdniaoTrackQueryAPI {
         return sb.toString();
     }
 
+    /**
+     * Json方式 单号识别
+     * @throws Exception
+     */
+    public static String getCompanyByJson(String expNo){
+        String result = "";
+        String requestData= "{'LogisticCode':'" + expNo + "'}";
+        try{
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("RequestData", urlEncoder(requestData, "UTF-8"));
+            params.put("EBusinessID", EBusinessID);
+            params.put("RequestType", "2002");
+            String dataSign = encrypt(requestData, AppKey, "UTF-8");
+            params.put("DataSign", urlEncoder(dataSign, "UTF-8"));
+            params.put("DataType", "2");
+            result=sendPost(ReqURL, params);
+
+        } catch (Exception e){
+
+        }
+
+        //根据公司业务处理返回的信息......
+
+        return result;
+    }
+
 
     public static String getExpressCompany(String express_no) {
         String pattern = "^\\d{10,}$";
         boolean isMatch = Pattern.matches(pattern, express_no);
         String json_data = "";
         if (isMatch){
-            Map<String,Object> map = new HashMap<String, Object>();
-            map.put("resultv2","1");
-            map.put("text",express_no);
-            json_data = HttpClientHelper.sendGet(company, map);
+            json_data = getCompanyByJson(express_no);
         }else {
             JSONObject json = new JSONObject();
             json.put("comCode",Code.EXPRESS_NO_ERROR.getValue());

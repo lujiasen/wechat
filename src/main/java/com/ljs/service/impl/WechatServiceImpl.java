@@ -1,16 +1,24 @@
 package com.ljs.service.impl;
 
+import com.ljs.dao.WeChatDao;
+import com.ljs.pojo.User;
 import com.ljs.service.WechatService;
+import com.ljs.util.MessageUtil;
 import com.ljs.util.WeiXinServerMenu;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
 import java.util.Map;
 
 @Service
 public class WechatServiceImpl implements WechatService {
 
     private Logger log = Logger.getLogger(WechatServiceImpl.class);
+
+    @Resource
+    private WeChatDao wechatDao;
 
     /**
      * 微信回调函数处理
@@ -36,8 +44,16 @@ public class WechatServiceImpl implements WechatService {
             }
 
         }
-
-        String resultxXml = WeiXinServerMenu.replyMessage(map,"你好!!!",type,paramEWM);
+        String msgType = map.get("MsgType");
+        User user = (User)wechatDao.queryOne("User.getUser",openid);
+        //获取用户信息
+        if(user == null){
+            user = new User();
+            user.setOpenId(openid);
+            wechatDao.insert("User.insertUser",user);
+        }
+        map.put("userId",String.valueOf(user.getId()));
+        String resultxXml = WeiXinServerMenu.replyMessage(map,paramEWM);
         return resultxXml;
     }
 }

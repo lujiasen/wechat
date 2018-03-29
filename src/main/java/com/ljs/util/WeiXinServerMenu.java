@@ -2,6 +2,7 @@ package com.ljs.util;
 
 
 
+import com.ljs.pojo.User;
 import org.apache.log4j.Logger;
 
 import java.util.Map;
@@ -30,7 +31,7 @@ public class WeiXinServerMenu {
 	* @date 2016-10-12 下午02:22:24  
 	* @version V1.2
 	 */
-	public static String replyMessage(Map<String,String> map,String welcomeContent,String type,String paramEWM){
+	public static String replyMessage(Map<String,String> map,String paramEWM){
 		 
 		//信息类型
 		String msgType = map.get("MsgType");
@@ -42,12 +43,12 @@ public class WeiXinServerMenu {
 			System.out.println("event============"+event);
 			//订阅
 			if(event.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)){
-				resultXml =WeChatResultMessage.getEvent(map,welcomeContent,type,paramEWM);
+				resultXml = WeChatResultMessage.getEvent(map,paramEWM);
 			}
 		}
 		//文本信息回復
 		else if(msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_TEXT)){
-			   resultXml =WeChatResultMessage.getSearchMessage(map,welcomeContent,type,paramEWM);
+			   resultXml = WeChatResultMessage.getSearchMessage(map,paramEWM);
 		}
 		
 		return resultXml;

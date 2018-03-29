@@ -38,18 +38,15 @@ public class WeChatResultMessage {
 	* @date 2016年11月16日 下午5:12:42  
 	* @version V1.2
 	 */
-	public static String getEvent(Map<String,String> map,String welcomeContent,String type,String paramEWM){
+	public static String getEvent(Map<String,String> map,String paramEWM){
 		String  resultXml="";
-		if (type.equals("lujiasen")){
-			TextMessage textMessage = new TextMessage();
-			textMessage.setCreateTime(Long.parseLong(map.get("CreateTime")));
-			textMessage.setFromUserName(map.get("ToUserName"));
-			textMessage.setToUserName(map.get("FromUserName"));
-			textMessage.setMsgType("text");
-			textMessage.setContent(welcomeContent);
-			resultXml= MessageUtil.textMessageToXml(textMessage);
-		}
-
+		TextMessage textMessage = new TextMessage();
+		textMessage.setCreateTime(Long.parseLong(map.get("CreateTime")));
+		textMessage.setFromUserName(map.get("ToUserName"));
+		textMessage.setToUserName(map.get("FromUserName"));
+		textMessage.setMsgType("text");
+		textMessage.setContent("你好!!!");
+		resultXml= MessageUtil.textMessageToXml(textMessage);
 		return resultXml;
 		
 		
@@ -63,7 +60,7 @@ public class WeChatResultMessage {
 	* @date 2016年11月16日 下午5:12:57  
 	* @version V1.2
 	 */
-	public static String getSearchMessage(Map<String,String> map,String welcomeContent,String type,String paramEWM){
+	public static String getSearchMessage(Map<String,String> map,String paramEWM){
 		String  resultXml = "";
 		String content = map.get("Content");
 		String return_content = "";
@@ -85,21 +82,18 @@ public class WeChatResultMessage {
 	public static  String getExpressCompany(String express_no){
 		String json_string = KdniaoTrackQueryAPI.getExpressCompany(express_no);
 		JSONObject json = JSONObject.fromObject(json_string);
-		String comCode = json.getString("comCode");
+		String comCode = json.getString("State");
 		if(Code.EXPRESS_NO_ERROR.getValue().equals(comCode)){
-			return json.getString("message");
+			return json.getString("Reason");
 		}else{
 			StringBuffer content = new StringBuffer();
 			content.append("点击查看详情\n");
-			JSONArray list = json.getJSONArray("auto");
+
+			JSONArray list = json.getJSONArray("Shippers");
 			JSONObject express_json = JSONObject.fromObject(EXPRESS);
 			list.forEach((Object j) -> {
 				JSONObject company = JSONObject.fromObject(j);
-				String name = (String)express_json.get(company.getString("comCode"));
-				if (name != null){
-					String[] name_ = name.split(",");
-					content.append(express_no + "\t" + name_[1]+"\n");
-				}
+				content.append(express_no + "\t" + company.get("ShipperName")+"\t"+company.get("ShipperCode")+"\n");
 			});
 			return content.toString();
 		}

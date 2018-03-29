@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="UserExpress">
+    <resultMap id="UserExpress" type="com.ljs.pojo.UserExpress">
+        <id  column="id" property="id"/>
+        <result  column="user_id" property="userId"/>
+        <result  column="express_no" property="expressNo"/>
+        <result column="attention" property="attention"/>
+        <result column="company_code" property="companyCode"/>
+        <result column="company" property="company"/>
+    </resultMap>
+    <select id="getUserExpress" parameterType="com.ljs.pojo.UserExpress" resultMap="UserExpress">
+      select * from user_express where user_id = #{userId} and express_no = #{expressNo}
+    </select>
+    <insert id="insertUserExpress" parameterType="com.ljs.pojo.UserExpress">
+        insert into user_express set
+          user_id = #{userId},
+          express_no = #{expressNo},
+          attention = 1
+    </insert>
+    <update id="updateUserExpress" parameterType="com.ljs.pojo.UserExpress">
+        update user_express  set attention = #{attention}
+        where user_id = #{userId}
+        and express_no = #{expressNo}
+    </update>
+</mapper>
