@@ -33,7 +33,7 @@ public class KdniaoTrackQueryAPI {
     //DEMO
     public static void main(String[] args) {
         try {
-            System.out.println(getCompanyByJson("403057dd274470"));
+            System.out.println(getExpressCompany("888753224812923378"));
             String expressMsg = getOrderTracesByJson("STO", "403057274470");
             JSONObject json = JSONObject.fromObject(expressMsg);
             System.out.println(json);

@@ -1,17 +1,18 @@
 package com.ljs.controller;
 
 import com.ljs.service.WechatService;
-import com.ljs.util.MessageUtil;
-import com.ljs.util.SignUtil;
-import com.ljs.util.WeChatResultMessage;
+import com.ljs.util.*;
+import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Map;
 
 @Controller
@@ -57,6 +58,42 @@ public class WechatController {
             }
         }
         return resultStr;
+    }
+    /**
+     * @Author lujiasen
+     * @Description: 微信网页授权回调
+     * @Date 下午5:15 2018/3/30
+     */
+    @RequestMapping(value = "/redirectUrl", produces = "application/json;charset=utf-8")
+    public String redirectUrl(HttpServletRequest request){
+        String code = request.getParameter("code");
+        String state = request.getParameter("state");
+        String param = request.getParameter("param"); //请求参数
+        JSONObject json = WechatUtil.get_code_token(WeChatParam.APPID.getValue(),WeChatParam.APPSERCET.getValue(),code);
+        log.info("redirectUrl=="+json.toString());
+        log.info("param="+request.getParameter("param"));
+        try{
+            String openId = json.getString("openid");
+            //解析参数
+            if(param!=null){
+                String[] params = param.split(",");
+                param = "";
+                for(String args : params){
+                    param += args+"&";
+                }
+            }
+            String[] params = param !=null ? param.split(",") : null;
+            if(("express_information").equals(state)){
+                String URL = WeChatURL.EXPRESS_INFORMATION.getUrl() + "?" + param;
+                log.info(URL);
+                return "redirect:"+URL;
+            }else{
+                return "";
+            }
+        }catch (Exception e){
+            return "";
+        }
+
 
     }
 }

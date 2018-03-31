@@ -15,7 +15,7 @@
     <insert id="insertUser" parameterType="com.ljs.pojo.User" useGeneratedKeys="true" keyProperty="id">
         insert into user SET
         open_id = #{openId},
-        nikcname = #{nickname},
+        nickname = #{nickname},
         mobile = #{mobile},
         icon = #{icon},
         address = #{address}

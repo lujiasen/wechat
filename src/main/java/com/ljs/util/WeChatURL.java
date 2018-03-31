@@ -7,7 +7,13 @@ public enum WeChatURL {
             "https://api.weixin.qq.com/cgi-bin/token"),
 
     USER_INFORMATION("获取用户资料,:示例:https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN",
-            "https://api.weixin.qq.com/cgi-bin/user/info");
+            "https://api.weixin.qq.com/cgi-bin/user/info"),
+
+    CODE("网页授权获取网页token,示例:https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code",
+        "https://api.weixin.qq.com/sns/oauth2/access_token"),
+
+    EXPRESS_INFORMATION("物流详情,:http://www.lujiasen.com/wechat-commons/public/express_information.html?expressNo=888753224812923378&companyCode=YTO&userId=22",
+            "http://www.lujiasen.com/wechat-commons/public/express_information.html");
 
 
     private String name;

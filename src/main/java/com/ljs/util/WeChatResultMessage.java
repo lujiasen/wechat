@@ -48,8 +48,6 @@ public class WeChatResultMessage {
 		textMessage.setContent("你好!!!");
 		resultXml= MessageUtil.textMessageToXml(textMessage);
 		return resultXml;
-		
-		
 	}
 	
 	/**
@@ -66,7 +64,7 @@ public class WeChatResultMessage {
 		String return_content = "";
 		if(content.startsWith("单号")){
 			String express_no = content.substring(2);
-			return_content = getExpressCompany(express_no);
+			return_content = getExpressCompany(express_no,Integer.valueOf(map.get("userId")));
 		}
 		TextMessage textMessage = new TextMessage();
 		textMessage.setCreateTime(Long.parseLong(map.get("CreateTime")));
@@ -78,24 +76,31 @@ public class WeChatResultMessage {
 		return resultXml;
 		
 	}
-
-	public static  String getExpressCompany(String express_no){
+	//#wechat_redirect
+	public static  String getExpressCompany(String express_no,int userId){
 		String json_string = KdniaoTrackQueryAPI.getExpressCompany(express_no);
 		JSONObject json = JSONObject.fromObject(json_string);
-		String comCode = json.getString("State");
-		if(Code.EXPRESS_NO_ERROR.getValue().equals(comCode)){
-			return json.getString("Reason");
+		JSONArray list_exprss = json.getJSONArray("Shippers");
+		if(list_exprss ==null || list_exprss.size() == 0){
+			return "暂无物流信息";
 		}else{
 			StringBuffer content = new StringBuffer();
 			content.append("点击查看详情\n");
-
 			JSONArray list = json.getJSONArray("Shippers");
 			JSONObject express_json = JSONObject.fromObject(EXPRESS);
 			list.forEach((Object j) -> {
 				JSONObject company = JSONObject.fromObject(j);
-				content.append(express_no + "\t" + company.get("ShipperName")+"\t"+company.get("ShipperCode")+"\n");
+				String url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx5179c821a45f7352&redirect_uri=http://www.lujiasen.com/wechat/weChat/redirectUrl?param=expressNo="+
+						express_no + ",companyCode="+company.get("ShipperCode")+",userId="+userId
+						+"&response_type=code&scope=snsapi_base&state=express_information&connect_redirect=1#wechat_redirect";
+				System.out.println(url);
+				content.append("<a href='"+url+"'>"+express_no + "\t" + company.get("ShipperName")+"\t"+"</a>\n");
 			});
 			return content.toString();
 		}
+	}
+
+	public static void main(String[] args) {
+		System.out.println(getExpressCompany("888753224812923378",1));
 	}
 }
