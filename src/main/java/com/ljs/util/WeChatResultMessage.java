@@ -99,8 +99,4 @@ public class WeChatResultMessage {
 			return content.toString();
 		}
 	}
-
-	public static void main(String[] args) {
-		System.out.println(getExpressCompany("888753224812923378",1));
-	}
 }

@@ -2,6 +2,7 @@ package com.ljs.controller;
 
 import com.ljs.pojo.Express;
 import com.ljs.pojo.Message;
+import com.ljs.pojo.User;
 import com.ljs.pojo.UserExpress;
 import com.ljs.service.ExpressService;
 import com.ljs.util.Code;
@@ -39,7 +40,11 @@ public class ExpressController {
         return m;
     }
 
-
+    /**
+     * @Author lujiasen
+     * @Description: 获取物流状态
+     * @Date 下午12:32 2018/4/1
+     */
     @CrossOrigin
     @RequestMapping(value = "getExpressState", produces = "application/json;charset=utf-8")
     @ResponseBody
@@ -49,6 +54,21 @@ public class ExpressController {
             m = expressService.getExpressState(userExpress);
         }catch (Exception e){
             logger.info("getExpressState===>"+e.fillInStackTrace());
+            m.setCode(Code.ERROR.getValue());
+            m.setData(Code.ERROR.getDemo());
+        }
+        return m;
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "getExpressList", produces = "application/json;charset=utf-8")
+    @ResponseBody
+    public Message getExpressList(User user){
+        Message m = new Message();
+        try{
+            m = expressService.getExpressList(user);
+        }catch (Exception e){
+            logger.info("getExpressList===>"+ e.fillInStackTrace());
             m.setCode(Code.ERROR.getValue());
             m.setData(Code.ERROR.getDemo());
         }

@@ -3,9 +3,11 @@ package com.ljs.service.impl;
 import com.ljs.dao.WeChatDao;
 import com.ljs.pojo.Express;
 import com.ljs.pojo.Message;
+import com.ljs.pojo.User;
 import com.ljs.pojo.UserExpress;
 import com.ljs.service.ExpressService;
 import com.ljs.util.Cache;
+import com.ljs.util.Code;
 import com.ljs.util.KdniaoTrackQueryAPI;
 import com.ljs.util.RedisConst;
 import net.sf.json.JSONArray;
@@ -53,10 +55,21 @@ public class ExpressServiceImpl implements ExpressService {
     public Message getExpressState(UserExpress userExpress) {
         Message message = new Message();
         UserExpress express = (UserExpress)weChatDao.queryOne("UserExpress.getUserExpress",userExpress);
+        if(express == null ){
+            weChatDao.insert("UserExpress.insertUserExpress",userExpress);
+        }
         String resultJson = KdniaoTrackQueryAPI.getOrderTracesByJson(userExpress.getCompanyCode(),userExpress.getExpressNo());
         JSONObject json = JSONObject.fromObject(resultJson);
-        json.put("attention",express == null ? 0 : express.getAttention());
         message.setData(json);
+        return message;
+    }
+
+    @Override
+    public Message getExpressList(User user) {
+        Message message = new Message();
+        List<Express> list = (List<Express>)weChatDao.query("UserExpress.getExpressList",user);
+        message.setCode(Code.SUCCESS.getValue());
+        message.setData(list);
         return message;
     }
 }

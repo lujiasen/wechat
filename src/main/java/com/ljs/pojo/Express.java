@@ -5,6 +5,15 @@ public class Express {
     private String expressNo;
     private String expressName;
     private int orderNo;
+    private String href;
+
+    public String getHref() {
+        return href;
+    }
+
+    public void setHref(String href) {
+        this.href = href;
+    }
 
     public int getExpressId() {
         return expressId;

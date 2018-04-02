@@ -86,7 +86,7 @@ public class WechatController {
             if(("express_information").equals(state)){
                 String URL = WeChatURL.EXPRESS_INFORMATION.getUrl() + "?" + param;
                 log.info(URL);
-                return "redirect:"+URL;
+                return "forward:"+URL;
             }else{
                 return "";
             }

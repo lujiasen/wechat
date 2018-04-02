@@ -23,4 +23,7 @@
         where user_id = #{userId}
         and express_no = #{expressNo}
     </update>
+    <select id="getExpressList" parameterType="com.ljs.pojo.User" resultMap="UserExpress">
+      select * from user_express where user_id = #{userId}
+    </select>
 </mapper>
