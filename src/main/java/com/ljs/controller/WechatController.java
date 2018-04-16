@@ -1,5 +1,6 @@
 package com.ljs.controller;
 
+import com.ljs.pojo.User;
 import com.ljs.service.WechatService;
 import com.ljs.util.*;
 import net.sf.json.JSONObject;
@@ -72,8 +73,11 @@ public class WechatController {
         JSONObject json = WechatUtil.get_code_token(WeChatParam.APPID.getValue(),WeChatParam.APPSERCET.getValue(),code);
         log.info("redirectUrl=="+json.toString());
         log.info("param="+request.getParameter("param"));
+        log.info("state="+state);
         try{
             String openId = json.getString("openid");
+            User user = weChatService.getUser(openId);
+            log.info("user="+JSONObject.fromObject(user));
             //解析参数
             if(param!=null){
                 String[] params = param.split(",");
@@ -86,11 +90,20 @@ public class WechatController {
             if(("express_information").equals(state)){
                 String URL = WeChatURL.EXPRESS_INFORMATION.getUrl() + "?" + param;
                 log.info(URL);
-                return "forward:"+URL;
+                return "redirect:"+URL;
+            }else if(("express_list").equals(state)){
+                int userId = 0;
+                if(user!=null){
+                    userId = user.getId();
+                }
+                String URL = WeChatURL.EXPRESS_LIST.getUrl() + "?userId=" + userId;
+                log.info(URL);
+                return "redirect:"+URL;
             }else{
                 return "";
             }
         }catch (Exception e){
+            e.printStackTrace();
             return "";
         }
 

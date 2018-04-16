@@ -56,4 +56,16 @@ public class WechatServiceImpl implements WechatService {
         String resultxXml = WeiXinServerMenu.replyMessage(map,paramEWM);
         return resultxXml;
     }
+
+    @Override
+    public User getUser(String openId) {
+        User user = (User)wechatDao.queryOne("User.getUser",openId);
+        //获取用户信息
+        if(user == null){
+            user = new User();
+            user.setOpenId(openId);
+            wechatDao.insert("User.insertUser",user);
+        }
+        return user;
+    }
 }

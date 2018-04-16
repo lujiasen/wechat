@@ -13,8 +13,10 @@ public enum WeChatURL {
         "https://api.weixin.qq.com/sns/oauth2/access_token"),
 
     EXPRESS_INFORMATION("物流详情,:http://www.lujiasen.com/wechat-commons/public/express_information.html?expressNo=888753224812923378&companyCode=YTO&userId=22",
-            "http://www.lujiasen.com/wechat-commons/public/express_information.html");
+            "http://www.lujiasen.com/wechat-commons/public/express_information.html"),
 
+    EXPRESS_LIST("物流列表,:http://www.lujiasen.com/wechat-commons/public//express_list.html?userId=1",
+            "http://www.lujiasen.com/wechat-commons/public/express_list.html");
 
     private String name;
     private String url;

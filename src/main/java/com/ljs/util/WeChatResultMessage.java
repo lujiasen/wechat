@@ -62,9 +62,11 @@ public class WeChatResultMessage {
 		String  resultXml = "";
 		String content = map.get("Content");
 		String return_content = "";
-		if(content.startsWith("单号")){
+		if(content.startsWith("查询")){
 			String express_no = content.substring(2);
 			return_content = getExpressCompany(express_no,Integer.valueOf(map.get("userId")));
+		}else{
+			return_content = "如若查询快递,请输入:查询+单号.如\"查询3804210740406\"";
 		}
 		TextMessage textMessage = new TextMessage();
 		textMessage.setCreateTime(Long.parseLong(map.get("CreateTime")));
