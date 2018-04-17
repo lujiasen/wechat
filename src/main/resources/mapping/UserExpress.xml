@@ -16,6 +16,8 @@
         insert into user_express set
           user_id = #{userId},
           express_no = #{expressNo},
+          company_code = #{companyCode},
+          company = #{company},
           attention = 1
     </insert>
     <update id="updateUserExpress" parameterType="com.ljs.pojo.UserExpress">
