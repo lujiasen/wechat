@@ -93,7 +93,7 @@ public class WeChatResultMessage {
 			list.forEach((Object j) -> {
 				JSONObject company = JSONObject.fromObject(j);
 				String url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx5179c821a45f7352&redirect_uri=http://www.lujiasen.com/wechat/weChat/redirectUrl?param=expressNo="+
-						express_no + ",companyCode="+company.get("ShipperCode")+",userId="+userId
+						express_no + ",companyCode="+company.get("ShipperCode")+",userId="+userId+",company="+company.get("ShipperName")
 						+"&response_type=code&scope=snsapi_base&state=express_information&connect_redirect=1#wechat_redirect";
 				System.out.println(url);
 				content.append("<a href='"+url+"'>"+express_no + "\t" + company.get("ShipperName")+"\t"+"</a>\n");
